@@ -48,9 +48,16 @@ public class BitSet {
         content[content.length - 1 - i] = value;
     }
 
-    public void set(int fromIndex, int toIndex, boolean value){
-        for (int i = fromIndex; i >= toIndex; i--) {
+    public void set(int toIndex, int fromIndex, boolean value){
+        for (int i = fromIndex; i <= toIndex; i++) {
             set(i, value);
+        }
+    }
+
+    public void set(int toIndex, int fromIndex, BitSet bitSet){
+        int j = 0;
+        for (int i = fromIndex; i <= toIndex; i++) {
+            set(i, bitSet.get(j++));
         }
     }
 
@@ -62,9 +69,9 @@ public class BitSet {
 
     public void flip(boolean all){
         if (all)
-            flip(0, content.length - 1);
+            flip(content.length - 1, 0);
         else
-            flip(0, content.length - 2);
+            flip(content.length - 2, 0);
     }
 
     public void shiftLeft(){
@@ -83,6 +90,22 @@ public class BitSet {
 
     public void limit(int n){
 
+    }
+
+    public BitSet clone(){
+        BitSet bitSet = new BitSet(content.length);
+        for (int i = 0; i < content.length; i++) {
+            bitSet.set(i, get(i));
+        }
+        return bitSet;
+    }
+
+    public BitSet clone(int toIndex, int fromIndex){
+        BitSet bitSet = new BitSet(toIndex - fromIndex + 1);
+        for (int i = fromIndex; i <= toIndex; i++) {
+            set(i, get(i));
+        }
+        return bitSet;
     }
 
     public static BitSet binaryAddition(BitSet first, BitSet second) {
@@ -107,8 +130,8 @@ public class BitSet {
                 result.set(i, false);
             }
         }
-        if (carry)
-            result.set(n, true);
+        /*if (carry)
+            result.set(n, true);*/
 
         return result;
     }
