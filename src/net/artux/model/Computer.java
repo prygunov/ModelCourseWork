@@ -1,4 +1,4 @@
-package net.artux;
+package net.artux.model;
 
 import java.util.Scanner;
 
@@ -25,7 +25,7 @@ public class Computer {
 
         aSet = BitSet.fromInt(a, 16);
         bSet = BitSet.fromInt(b, 16);
-        cSet = new BitSet(32);
+        cSet = new BitSet(16);
         ch = 15;
 
         am = new BitSet(32);
@@ -98,7 +98,8 @@ public class Computer {
                     BitSet.binaryAddition(temp, BitSet.ONE()));
             debug("a9");
         }
-        System.out.println(cSet.getInt());
+
+        System.out.println(cSet.clone(15, 0).getInt(true));
     }
 
     private void debug(String state){

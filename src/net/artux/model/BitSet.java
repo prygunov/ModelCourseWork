@@ -1,8 +1,4 @@
-package net.artux;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+package net.artux.model;
 
 public class BitSet {
 
@@ -88,8 +84,11 @@ public class BitSet {
         set(content.length - 1, false);
     }
 
-    public void limit(int n){
-
+    public BitSet fill(int n){
+        for (int i = content.length; i < n; i++) {
+            set(i, false);
+        }
+        return this;
     }
 
     public BitSet clone(){
@@ -103,7 +102,7 @@ public class BitSet {
     public BitSet clone(int toIndex, int fromIndex){
         BitSet bitSet = new BitSet(toIndex - fromIndex + 1);
         for (int i = fromIndex; i <= toIndex; i++) {
-            set(i, get(i));
+            bitSet.set(i, get(i));
         }
         return bitSet;
     }
@@ -137,6 +136,7 @@ public class BitSet {
     }
 
     public static BitSet minus(BitSet a, BitSet b){
+        b.fill(a.content.length);
         b.flip(false);
         b = binaryAddition(b, BitSet.ONE());
         BitSet result = binaryAddition(a, b);
@@ -149,11 +149,27 @@ public class BitSet {
         return bitSet;
     }
 
-    public int getInt(){
+    public int getInt(boolean canBeNegative){
         int result = 0;
-        for (int i = 0; i < content.length; i++) {
-            if (get(i))
-                result += Math.pow(2, i);
+
+        if (!canBeNegative) {
+            for (int i = 0; i < content.length; i++) {
+                if (get(i))
+                    result += Math.pow(2, i);
+            }
+        }else{
+            boolean negative = get(content.length - 1);
+            if (negative) {
+                this.content = minus(this, ONE()).content;
+                flip(false);
+            }
+
+            for (int i = 0; i < content.length - 1; i++) {
+                if (get(i))
+                    result += Math.pow(2, i);
+            }
+            if(negative)
+                result = -result;
         }
         return result;
     }

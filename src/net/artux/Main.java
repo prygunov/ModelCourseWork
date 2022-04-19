@@ -1,6 +1,6 @@
 package net.artux;
 
-import java.util.Scanner;
+import net.artux.model.Computer;
 
 public class Main {
 
