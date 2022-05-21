@@ -1,13 +1,12 @@
 package net.artux;
 
-import net.artux.model.Computer;
+import javax.swing.*;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        // write your code here
-        Computer computer = new Computer();
-        computer.compute();
-
+        UIManager.setLookAndFeel(
+                UIManager.getSystemLookAndFeelClassName()); // получение и установка для программы стиля системы
+        new Application(); // запуск приложения
     }
 }

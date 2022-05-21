@@ -2,33 +2,33 @@ package net.artux.model;
 
 import java.util.Scanner;
 
-public class Computer {
+public class DataModel {
 
-    BitSet aSet;
-    BitSet bSet;
-    BitSet cSet;
-    BitSet am;
-    int ch;
+    public BitSet aSet;
+    public BitSet bSet;
+    public BitSet cSet;
+    public BitSet am;
+    public int ch;
 
-    Scanner scanner;
+    private MainUI mainUI;
 
-    public Computer() {
-        scanner = new Scanner(System.in);
+    public DataModel(MainUI mainUI) {
+        this.mainUI = mainUI;
+        reset();
+    }
+
+    public void reset(){
+        aSet = new BitSet(16);
+        bSet = new BitSet(16);
+        cSet = new BitSet(16);
+        am = new BitSet(32);
     }
 
     public void compute() throws Exception {
-        int a = scanner.nextInt();
-        int b = scanner.nextInt();
-
-        if (a == 0 || b == 0)
+        if (aSet.isNull() || bSet.isNull())
             return;
 
-        aSet = BitSet.fromInt(a, 16);
-        bSet = BitSet.fromInt(b, 16);
-        cSet = new BitSet(16);
         ch = 15;
-
-        am = new BitSet(32);
         am.set(31, 30, aSet.get(15));
 
         for (int i = 0; i < 15; i++) {
@@ -113,6 +113,14 @@ public class Computer {
         System.out.println("СЧ " + ch);
 
         System.out.println("---------------------");
+    }
+
+    public void flip(int type, int index){
+        if (type == 0)
+            aSet.flip(index);
+        else
+            bSet.flip(index);
+        mainUI.updateInput(aSet, bSet);
     }
 
 }

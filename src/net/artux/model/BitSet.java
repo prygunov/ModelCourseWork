@@ -8,6 +8,10 @@ public class BitSet {
         content = new boolean[n];
     }
 
+    public int getSize(){
+        return content.length;
+    }
+
     public static BitSet fromInt(int a, int n) throws Exception {
         if (Math.abs(a) > 32767)
             throw new Exception("yap");
@@ -63,6 +67,10 @@ public class BitSet {
         }
     }
 
+    public void flip(int index){
+        set(index, !get(index));
+    }
+
     public void flip(boolean all){
         if (all)
             flip(content.length - 1, 0);
@@ -89,6 +97,14 @@ public class BitSet {
             set(i, false);
         }
         return this;
+    }
+
+    public boolean isNull(){
+        for (int i = 0; i < content.length; i++) {
+            if (get(i))
+                return false;
+        }
+        return true;
     }
 
     public BitSet clone(){
@@ -158,13 +174,14 @@ public class BitSet {
                     result += Math.pow(2, i);
             }
         }else{
+            BitSet straight = this;
             boolean negative = get(content.length - 1);
             if (negative) {
-                this.content = minus(this, ONE()).content;
-                flip(false);
+                straight = minus(this, ONE());
+                straight.flip(false);
             }
 
-            for (int i = 0; i < content.length - 1; i++) {
+            for (int i = 0; i < straight.getSize() - 1; i++) {
                 if (get(i))
                     result += Math.pow(2, i);
             }
